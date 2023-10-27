@@ -13,5 +13,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(fmt)
 
+add_executable(CorrectSudoku correct-sudoku/correct-sudoku.cpp)
 add_executable(BoxPrint box-print/box-print.cpp)
+target_link_libraries(CorrectSudoku fmt)
 target_link_libraries(BoxPrint fmt)
