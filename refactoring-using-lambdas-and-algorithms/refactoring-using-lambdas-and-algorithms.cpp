@@ -30,5 +30,5 @@ auto example(
 }
 
 auto main() -> int {
-    
+
 }
