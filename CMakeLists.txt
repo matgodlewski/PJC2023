@@ -13,5 +13,5 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(fmt)
 
-add_executable(Main main.cpp)
-target_link_libraries(Main fmt)
+add_executable(RefactoringUsingLambdasAndAlgorithms refactoring-using-lambdas-and-algorithms/refactoring-using-lambdas-and-algorithms.cpp)
+target_link_libraries(RefactoringUsingLambdasAndAlgorithms fmt)
