@@ -13,5 +13,5 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(fmt)
 
-add_executable(Main main.cpp)
-target_link_libraries(Main fmt)
+add_executable(CorrectSudoku correct-sudoku/correct-sudoku.cpp)
+target_link_libraries(CorrectSudoku fmt)
