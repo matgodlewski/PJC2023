@@ -1,97 +1,43 @@
-# Refactoring using lambdas and algorithms
+# Correct sudoku
 
-### Replacing repetitive implementations with local lambda
-Let's assume we're dealing with code that checks whether both std::string objects passed in start with a capital letter:
+### Correctly solved sudoku in the file
 
-    auto example(std::string& left, std::string& right) -> void {
-        if (left.front() >= 'A' and left.front() <= 'Z' and right.front() >= 'A' and right.front() <= 'Z') {
-        // ...
-        }
-    }
+Sudoku is a game that involves arranging the numbers on a 9x9 board in the right way. In each row and in each column, each digit (1 - 9) must appear exactly once. By dividing the board into nine pieces consisting of fields arranged in a 3x3 square, each of these pieces must also consist of each of the numbers - without repetitions.
 
-Naturally, such code can be improved by separating appropriate parts of the expression being checked into named variables:
+Sudoku in the file is written in nine lines, each of which consists of nine digits separated by single spaces. The files considered are text.
 
-    auto example(std::string& left, std::string& right) -> void {
-        auto leftStartsWithUppercase  = left.front() >= 'A' and left.front() <= 'Z';
-        auto rightStartsWithUppercase = right.front() >= 'A' and right.front() <= 'Z';
-    
-        if (leftStartsWithUppercase and rightStartsWithUppercase) {
-            // ...
-        }
-    }
+Write a program that, for a given path to the folder containing text files storing Sudoku solutions, will create a new text file called solutions.txt, in which it will place all the names of the mentioned files containing correctly solved Sudoku puzzles.
 
-However, sometimes a better idea is to use a local function that is so specific that it is not worth introducing it into the global space:
+### Examples
 
-    auto example(std::string& left, std::string& right) -> void {
-        auto startsWithUppercase = [](std::string& str) {
-            return str.front() >= 'A' and str.front() <= 'Z';
-        };
-    
-        if (startsWithUppercase(left) and startsWithUppercase(right)) {
-            // ...
-        }
-    }
+    5 3 4 6 7 8 9 1 2
+    6 7 2 1 9 5 3 4 8
+    1 9 8 3 4 2 5 6 7
+    8 5 9 7 6 1 4 2 3
+    4 2 6 8 5 3 7 9 1
+    7 1 3 9 2 4 8 5 6
+    9 6 1 5 3 7 2 8 4
+    2 8 7 4 1 9 6 3 5
+    3 4 5 2 8 6 1 7 9
 
-### Task
+There are no errors in the above solution.
 
-Apply refactoring to the function below. Identify what specific pieces of code do. Use local lambdas to isolate repetitive code.
+    7 9 4 1 8 3 2 5 6
+    6 1 3 7 2 5 8 9 8
+    5 8 2 9 6 4 7 3 1
+    2 7 1 5 4 8 9 6 3
+    9 3 6 2 1 7 4 8 5
+    4 5 8 6 3 9 1 7 2
+    1 4 5 8 9 2 6 3 7
+    8 6 9 3 7 1 5 4 2
+    3 2 7 4 5 6 9 1 4
 
-    auto example(
-            std::vector<std::string> left, std::vector<std::string> right
-    ) -> void {
-        std::ranges::sort(left);
-        auto duplicates = std::ranges::unique(left);
-        left.erase(duplicates.begin(), duplicates.end());
-    
-        std::ranges::sort(right);
-        duplicates = std::ranges::unique(right);
-        right.erase(duplicates.begin(), duplicates.end());
-    
-        if (left.size() < right.size()) {
-            for (auto i = 0; i < right.size(); i++) {
-                for (auto j = 0; j < right.size() - 1 - i; j++) {
-                    // both start with a digit or both start with a letter
-                    if ((right[j].front() >= '0' and
-                         right[j].front() <= '9' and
-                         right[j + 1].front() >= '0' and
-                         right[j + 1].front() <= '9')
-                        or
-                        ((right[j].front() < '0' or
-                         right[j].front() > '9') and
-                         (right[j + 1].front() < '0' or
-                         right[j + 1].front() > '9'))) {
-                        if (right[j] > right[j + 1]) {
-                            std::ranges::swap(right[j], right[j + 1]);
-                        }
-                    } else { // leading digits last
-                        if (right[j].front() >= '0' and right[j].front() <= '9') {
-                            std::ranges::swap(right[j], right[j + 1]);
-                        }
-                    }
-                }
-            }
-        } else {
-            for (auto i = 0; i < left.size(); i++) {
-                for (auto j = 0; j < left.size() - 1 - i; j++) {
-                    // both start with a digit or both start with a letter
-                    if ((left[j].front() >= '0' and
-                         left[j].front() <= '9' and
-                         left[j + 1].front() >= '0' and
-                         left[j + 1].front() <= '9')
-                        or
-                        ((left[j].front() < '0' or
-                          left[j].front() > '9') and
-                         (left[j + 1].front() < '0' or
-                          left[j + 1].front() > '9'))) {
-                        if (left[j] > left[j + 1]) {
-                            std::ranges::swap(left[j], left[j + 1]);
-                        }
-                    } else { // leading digits last
-                        if (left[j].front() >= '0' and left[j].front() <= '9') {
-                            std::ranges::swap(left[j], left[j + 1]);
-                        }
-                    }
-                }
-            }
-        }
-    }
+In the example above, the problems are:
+
+    There are two eights in the second row.
+    There are two fours in the last row.
+    There are two nines in the third from the bottom column.
+    There are two threes in the second from the bottom column.
+    There are two 2s in the last column.
+    There are two figure eights in the upper right 3x3 segment.
+    There are two fours in the lower left 3x3 segment.
